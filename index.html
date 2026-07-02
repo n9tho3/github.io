@@ -1,321 +1,530 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>项目资源下载</title>
-    <style>
-        /* 基础变量 专业商务配色 */
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>个人简历 - 工业项目资源下载</title>
+<style>
+    /* 基础变量 专业商务配色 */
+    :root {
+        --primary: #165DFF;
+        --primary-dark: #0E42B3;
+        --bg: #F5F7FA;
+        --card-bg: #FFFFFF;
+        --text-title: #1D2129;
+        --text-secondary: #4E5969;
+        --text-hint: #86909C;
+        --border: #C9CDD4;
+        --item-bg: #FCFDFF;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --shadow-hover: 0 8px 24px rgba(22, 93, 255, 0.15);
+    }
+
+    @media (prefers-color-scheme: dark) {
         :root {
-            --primary: #165DFF;
-            --primary-dark: #0E42B3;
-            --bg: #F5F7FA;
-            --card-bg: #FFFFFF;
-            --text-title: #1D2129;
-            --text-secondary: #4E5969;
-            --text-hint: #86909C;
-            --border: #C9CDD4;
-            --item-bg: #FCFDFF;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 8px 24px rgba(22, 93, 255, 0.15);
+            --bg: #0F172A;
+            --card-bg: #1E293B;
+            --text-title: #F1F5F9;
+            --text-secondary: #CBD5E1;
+            --text-hint: #94A3B8;
+            --border: #334155;
+            --item-bg: #273449;
         }
+    }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0F172A;
-                --card-bg: #1E293B;
-                --text-title: #F1F5F9;
-                --text-secondary: #CBD5E1;
-                --text-hint: #94A3B8;
-                --border: #334155;
-                --item-bg: #273449;
-            }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft Yahei", sans-serif;
+        background-color: var(--bg);
+        min-height: 100vh;
+        padding: 3rem 0;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* 头像和信息区域 */
+    .profile-top {
+        display: flex;
+        gap: 2rem;
+        align-items: flex-start;
+        margin-bottom: 3rem;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .avatar-upload {
+        flex-shrink: 0;
+        width: 140px;
+        height: 140px;
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid var(--primary);
+        cursor: pointer;
+        background: var(--item-bg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--primary);
+        font-size: 3rem;
+        transition: border-color 0.3s;
+    }
+    .avatar-upload:hover {
+        border-color: var(--primary-dark);
+    }
+    .avatar-upload img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .avatar-upload input[type="file"] {
+        display: none;
+    }
+    .avatar-placeholder {
+        user-select: none;
+    }
+
+    .profile-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-header {
+        margin-bottom: 1rem;
+    }
+
+    .profile-header h1 {
+        font-size: 2.5rem;
+        color: var(--text-title);
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+    }
+
+    .profile-header p.position {
+        font-size: 1.2rem;
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .profile-contact {
+        font-size: 1rem;
+        color: var(--text-hint);
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.03em;
+    }
+
+    .profile-desc {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .section {
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 1.8rem 2rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .section h2 {
+        font-size: 1.5rem;
+        color: var(--text-title);
+        margin-bottom: 1rem;
+        border-left: 4px solid var(--primary);
+        padding-left: 12px;
+    }
+
+    .section p,
+    .section ul {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .section ul {
+        list-style: inside disc;
+    }
+
+    /* 下载列表沿用之前样式，小幅调整 */
+    .download-list {
+        list-style: none;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .download-item {
+        background-color: var(--item-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+    }
+
+    .download-item:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+    }
+
+    .download-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.2rem;
+        text-decoration: none;
+        gap: 1rem;
+    }
+
+    .file-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .file-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        background-color: rgba(22, 93, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .file-name {
+        font-size: 16px;
+        color: var(--text-title);
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .download-btn {
+        padding: 8px 20px;
+        background-color: var(--primary);
+        color: #FFFFFF !important;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background-color 0.2s;
+        flex-shrink: 0;
+    }
+
+    .download-item:hover .download-btn {
+        background-color: var(--primary-dark);
+    }
+
+    .file-type-tag,
+    .file-tech-tag {
+        font-size: 12px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-top: 4px;
+        display: inline-block;
+    }
+    /* 描述标签 */
+    .file-type-tag {
+        background-color: rgba(22, 93, 255, 0.08);
+        color: var(--primary);
+        margin-right: 8px;
+    }
+    /* 技术栈标签 */
+    .file-tech-tag {
+        background-color: rgba(22, 93, 255, 0.2);
+        color: var(--primary-dark);
+        font-weight: 600;
+    }
+
+    .tags-container {
+        margin-top: 4px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        to {
+            opacity: 1;
         }
+    }
 
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 640px) {
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft Yahei", sans-serif;
-            background-color: var(--bg);
-            min-height: 100vh;
-            padding: 3rem 0;
-            color: var(--text-secondary);
-            line-height: 1.5;
+            padding: 1.5rem 0;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .profile-top {
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
         }
-
-        .project-header {
+        .avatar-upload {
+            width: 120px;
+            height: 120px;
+        }
+        .profile-header h1 {
+            font-size: 1.8rem;
             text-align: center;
-            margin-bottom: 2.5rem;
-            animation: fadeIn 0.5s ease-out;
         }
-
-        .project-header h1 {
-            font-size: 2rem;
-            color: var(--text-title);
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-        }
-
-        .project-desc {
+        .profile-header p.position {
             font-size: 1rem;
-            color: var(--text-hint);
-            max-width: 600px;
-            margin: 0 auto;
+            text-align: center;
         }
-
-        .download-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            animation: fadeInUp 0.6s ease-out;
+        .profile-contact {
+            text-align: center;
         }
-
-        .download-list {
-            list-style: none;
-            display: grid;
-            gap: 1rem;
+        .profile-desc {
+            text-align: center;
         }
-
-        .download-item {
-            background-color: var(--item-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-
-        .download-item:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
-        }
-
-        .download-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .section {
             padding: 1rem 1.2rem;
-            text-decoration: none;
-            gap: 1rem;
         }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 0;
+        .download-link {
+            flex-direction: column;
+            align-items: flex-start;
         }
-
-        .file-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 6px;
-            background-color: rgba(22, 93, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .file-name {
-            font-size: 16px;
-            color: var(--text-title);
-            font-weight: 500;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
         .download-btn {
-            padding: 8px 20px;
-            background-color: var(--primary);
-            color: #FFFFFF !important;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.2s;
-            flex-shrink: 0;
+            align-self: flex-end;
         }
+    }
 
-        .download-item:hover .download-btn {
-            background-color: var(--primary-dark);
+    @media (prefers-color-scheme: dark) {
+        .file-icon {
+            background-color: rgba(22, 93, 255, 0.2);
         }
-
         .file-type-tag {
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            background-color: rgba(22, 93, 255, 0.08);
-            color: var(--primary);
-            margin-top: 4px;
-            display: inline-block;
+            background-color: rgba(22, 93, 255, 0.2);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* 移动端适配 */
-        @media (max-width: 640px) {
-            body {
-                padding: 1.5rem 0;
-            }
-            .project-header h1 {
-                font-size: 1.5rem;
-            }
-            .download-card {
-                padding: 1.2rem;
-            }
-            .download-link {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .download-btn {
-                align-self: flex-end;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .file-icon {
-                background-color: rgba(22, 93, 255, 0.2);
-            }
-            .file-type-tag {
-                background-color: rgba(22, 93, 255, 0.2);
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- 项目头部信息 -->
-        <div class="project-header">
-            <h1>工业项目资源下载</h1>
-            <p class="project-desc">以下是整理好的项目源码与演示工程，点击对应下载按钮即可获取文件</p>
-        </div>
-
-        <!-- 下载列表卡片 -->
-        <div class="download-card">
-            <ul class="download-list">
-                
-                <li class="download-item">
-                    <a href="LineStationMES.zip" class="download-link" download>
-                        <div class="file-info">
-                            <div class="file-icon">🗜️</div>
-                            <div>
-                                <div class="file-name">NICtrl.zip</div>
-                                <span class="file-type-tag">NIctrl为应对不同品牌但相同功能的基础类库</span>
-                            </div>
-                        </div>
-                        <span class="download-btn">立即下载</span>
-                    </a>
-                </li>
-                
-                <li class="download-item">
-                    <a href="LineStationMES.zip" class="download-link" download>
-                        <div class="file-info">
-                            <div class="file-icon">🗜️</div>
-                            <div>
-                                <div class="file-name">Sales.zip</div>
-                                <span class="file-type-tag">销售管理demo</span>
-                            </div>
-                        </div>
-                        <span class="download-btn">立即下载</span>
-                    </a>
-                </li>
-                
-                <li class="download-item">
-                    <a href="LineStationMES.zip" class="download-link" download>
-                        <div class="file-info">
-                            <div class="file-icon">🗜️</div>
-                            <div>
-                                <div class="file-name">LineStationMES.zip</div>
-                                <span class="file-type-tag">生产线MES系统</span>
-                            </div>
-                        </div>
-                        <span class="download-btn">立即下载</span>
-                    </a>
-                </li>
-
-                <li class="download-item">
-                    <a href="SemiconductorMESDemo.zip" class="download-link" download>
-                        <div class="file-info">
-                            <div class="file-icon">🗜️</div>
-                            <div>
-                                <div class="file-name">SemiconductorMESDemo.zip</div>
-                                <span class="file-type-tag">半导体MES演示工程</span>
-                            </div>
-                        </div>
-                        <span class="download-btn">立即下载</span>
-                    </a>
-                </li>
-
-                <li class="download-item">
-                    <a href="Print3DHostDemo.zip" class="download-link" download>
-                        <div class="file-info">
-                            <div class="file-icon">🗜️</div>
-                            <div>
-                                <div class="file-name">Print3DHostDemo.zip</div>
-                                <span class="file-type-tag">3D打印主机演示</span>
-                            </div>
-                        </div>
-                        <span class="download-btn">立即下载</span>
-                    </a>
-                </li>
-
-                <li class="download-item">
-                    <a href="SemiconductorWaferStageDemo.Net8.zip" class="download-link" download>
-                        <div class="file-info">
-                            <div class="file-icon">🗜️</div>
-                            <div>
-                                <div class="file-name">SemiconductorWaferStageDemo.Net8.zip</div>
-                                <span class="file-type-tag">晶圆台演示 .NET8</span>
-                            </div>
-                        </div>
-                        <span class="download-btn">立即下载</span>
-                    </a>
-                </li>
-                
-                <li class="download-item">
-                    <a href="WinformMultithreadChartDemo.zip" class="download-link" download>
-                        <div class="file-info">
-                            <div class="file-icon">🗜️</div>
-                            <div>
-                                <div class="file-name">WinformMultithreadChartDemo.zip</div>
-                                <span class="file-type-tag">多线程图表演示</span>
-                            </div>
-                        </div>
-                        <span class="download-btn">立即下载</span>
-                    </a>
-                </li>
-                
-            </ul>
+<div class="container">
+    <!-- 头像和信息区域 -->
+    <div class="profile-top">
+        <label class="avatar-upload" for="avatarInput" title="点击上传头像">
+            <img id="avatarPreview" src="" alt="头像预览" style="display:none;"/>
+            <span class="avatar-placeholder">👤</span>
+            <input type="file" id="avatarInput" accept="image/*" />
+        </label>
+        <div class="profile-info">
+            <div class="profile-header">
+                <h1>张三</h1>
+                <p class="position">工业软件工程师 / MES系统开发</p>
+            </div>
+            <p class="profile-contact">
+                电话: 123-4567-8901 | 邮箱: zhangsan@example.com | 地址: 上海市
+            </p>
+            <p class="profile-desc">
+                拥有10年以上工业自动化和MES系统开发经验，熟悉多线程编程、系统集成及销售管理软件设计。热爱技术研究，致力于提升生产效率与数据管理智能化。
+            </p>
         </div>
     </div>
 
+    <!-- 技能专长 -->
+    <section class="section">
+        <h2>技能专长</h2>
+        <ul>
+            <li>C#/.NET开发与多线程编程</li>
+            <li>工业MES系统设计与实施</li>
+            <li>UI设计与用户体验优化</li>
+            <li>3D打印与设备控制集成</li>
+            <li>项目管理与团队协作</li>
+        </ul>
+    </section>
+
+    <!-- 工作经历 -->
+    <section class="section">
+        <h2>工作经历</h2>
+        <ul>
+            <li>
+                <strong>某知名制造企业 - 高级软件工程师</strong> (2020 - 至今)<br />
+                负责MES系统开发、设备接口集成与维护，优化生产线自动化管理流程。
+            </li>
+            <li>
+                <strong>某工业软件公司 - 软件开发工程师</strong> (2015 - 2020)<br />
+                参与销售管理系统及多线程图表演示软件开发，多项目协作经验丰富。
+            </li>
+        </ul>
+    </section>
+
+    <!-- 教育背景 -->
+    <section class="section">
+        <h2>教育背景</h2>
+        <ul>
+            <li><strong>上海交通大学 - 计算机科学与技术学士</strong> (2010 - 2014)</li>
+        </ul>
+    </section>
+
+    <!-- 项目资源下载 -->
+    <section class="section">
+        <h2>项目资源下载</h2>
+        <p>以下是整理好的项目源码与演示工程，点击对应下载按钮即可获取文件。</p>
+        <ul class="download-list">
+            <li class="download-item">
+                <a href="LineStationMES.zip" class="download-link" download>
+                    <div class="file-info">
+                        <div class="file-icon">🗜️</div>
+                        <div>
+                            <div class="file-name">NICtrl.zip</div>
+                            <div class="tags-container">
+                                <span class="file-type-tag">NIctrl为应对不同品牌但相同功能的基础类库</span>
+                                <span class="file-tech-tag">C# .NET</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="download-btn">立即下载</span>
+                </a>
+            </li>
+
+            <li class="download-item">
+                <a href="Sales.zip" class="download-link" download>
+                    <div class="file-info">
+                        <div class="file-icon">🗜️</div>
+                        <div>
+                            <div class="file-name">Sales.zip</div>
+                            <div class="tags-container">
+                                <span class="file-type-tag">销售管理demo</span>
+                                <span class="file-tech-tag">ASP.NET MVC SQL Server</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="download-btn">立即下载</span>
+                </a>
+            </li>
+
+            <li class="download-item">
+                <a href="LineStationMES.zip" class="download-link" download>
+                    <div class="file-info">
+                        <div class="file-icon">🗜️</div>
+                        <div>
+                            <div class="file-name">LineStationMES.zip</div>
+                            <div class="tags-container">
+                                <span class="file-type-tag">生产线MES系统</span>
+                                <span class="file-tech-tag">C# .NET Core WPF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="download-btn">立即下载</span>
+                </a>
+            </li>
+
+            <li class="download-item">
+                <a href="SemiconductorMESDemo.zip" class="download-link" download>
+                    <div class="file-info">
+                        <div class="file-icon">🗜️</div>
+                        <div>
+                            <div class="file-name">SemiconductorMESDemo.zip</div>
+                            <div class="tags-container">
+                                <span class="file-type-tag">半导体MES演示工程</span>
+                                <span class="file-tech-tag">C# .NET WPF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="download-btn">立即下载</span>
+                </a>
+            </li>
+
+            <li class="download-item">
+                <a href="Print3DHostDemo.zip" class="download-link" download>
+                    <div class="file-info">
+                        <div class="file-icon">🗜️</div>
+                        <div>
+                            <div class="file-name">Print3DHostDemo.zip</div>
+                            <div class="tags-container">
+                                <span class="file-type-tag">3D打印主机演示</span>
+                                <span class="file-tech-tag">C# WPF 3D</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="download-btn">立即下载</span>
+                </a>
+            </li>
+
+            <li class="download-item">
+                <a href="SemiconductorWaferStageDemo.Net8.zip" class="download-link" download>
+                    <div class="file-info">
+                        <div class="file-icon">🗜️</div>
+                        <div>
+                            <div class="file-name">SemiconductorWaferStageDemo.Net8.zip</div>
+                            <div class="tags-container">
+                                <span class="file-type-tag">晶圆台演示 .NET8</span>
+                                <span class="file-tech-tag">C# .NET 8 WPF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="download-btn">立即下载</span>
+                </a>
+            </li>
+
+            <li class="download-item">
+                <a href="WinformMultithreadChartDemo.zip" class="download-link" download>
+                    <div class="file-info">
+                        <div class="file-icon">🗜️</div>
+                        <div>
+                            <div class="file-name">WinformMultithreadChartDemo.zip</div>
+                            <div class="tags-container">
+                                <span class="file-type-tag">多线程图表演示</span>
+                                <span class="file-tech-tag">C# WinForms 多线程</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="download-btn">立即下载</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+</div>
+
+<script>
+    // 头像上传逻辑
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+    const avatarUpload = document.querySelector('.avatar-upload');
+
+    avatarInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+            avatarPreview.src = evt.target.result;
+            avatarPreview.style.display = 'block';
+            avatarPlaceholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    });
+</script>
 </body>
 </html>
