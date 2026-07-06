@@ -77,10 +77,14 @@
         align-items: center;
         color: var(--primary);
         font-size: 3rem;
-        transition: border-color 0.3s;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        box-shadow: 0 0 8px rgba(22, 93, 255, 0.3);
     }
-    .avatar-upload:hover {
+    .avatar-upload:hover,
+    .avatar-upload:focus {
         border-color: var(--primary-dark);
+        box-shadow: 0 0 12px rgba(22, 93, 255, 0.5);
+        outline: none;
     }
     .avatar-upload img {
         width: 100%;
@@ -110,25 +114,51 @@
         color: var(--text-title);
         font-weight: 700;
         margin-bottom: 0.3rem;
+        line-height: 1.1;
     }
 
     .profile-header p.position {
         font-size: 1.2rem;
         color: var(--primary);
         font-weight: 600;
+        margin-bottom: 0.4rem;
     }
 
+    /* 新增基础信息 */
+    .basic-info {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-top: 0.2rem;
+        display: flex;
+        gap: 1.6rem;
+        font-weight: 500;
+    }
+
+    /* 联系方式 */
     .profile-contact {
         font-size: 1rem;
         color: var(--text-hint);
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.8rem;
         letter-spacing: 0.03em;
     }
 
+    .profile-contact a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .profile-contact a:hover,
+    .profile-contact a:focus {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+
+    /* 描述 */
     .profile-desc {
         font-size: 1rem;
         color: var(--text-secondary);
         line-height: 1.6;
+        max-width: 600px;
     }
 
     /* 新增左右分栏布局 */
@@ -214,17 +244,39 @@
         padding-left: 0;
     }
 
-    .education-list li {
+    .education-item {
         background: var(--item-bg);
-        padding: 12px 16px;
+        padding: 16px;
         border-radius: 8px;
         margin-bottom: 1rem;
-        color: var(--text-secondary);
-        font-weight: 600;
     }
 
-    .education-list li:last-child {
+    .education-item:last-child {
         margin-bottom: 0;
+    }
+
+    .education-item h3 {
+        color: var(--text-title);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+    }
+
+    .education-item .period {
+        color: var(--primary);
+        font-weight: 500;
+        margin-bottom: 0.8rem;
+    }
+
+    .education-item .courses, .education-item .grades {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .education-item .courses strong, .education-item .grades strong {
+        color: var(--text-title);
+        font-weight: 600;
     }
 
     /* 继续使用已有的section样式，保证外观统一 */
@@ -378,12 +430,20 @@
         .profile-header p.position {
             font-size: 1rem;
             text-align: center;
+            margin-bottom: 0.3rem;
+        }
+        .basic-info {
+            justify-content: center;
+            gap: 1em;
         }
         .profile-contact {
             text-align: center;
+            margin-bottom: 1.2rem;
         }
         .profile-desc {
             text-align: center;
+            max-width: 100%;
+            padding: 0 1rem;
         }
 
         /* 分栏变单栏 */
@@ -421,7 +481,7 @@
 <div class="container">
     <!-- 头像和信息区域 -->
     <div class="profile-top">
-        <label class="avatar-upload" for="avatarInput" title="点击上传头像">
+        <label class="avatar-upload" for="avatarInput" title="点击上传头像" aria-label="上传头像" tabindex="0">
             <img id="avatarPreview" src="" alt="头像预览" style="display:none;"/>
             <span class="avatar-placeholder">👤</span>
             <input type="file" id="avatarInput" accept="image/*" />
@@ -430,12 +490,22 @@
             <div class="profile-header">
                 <h1>于佳旭</h1>
                 <p class="position">软件工程师 / C#&C++</p>
+
+                <!-- 新增基础信息 -->
+                <div class="basic-info">
+                    <span>年龄：28岁</span>
+                    <span>性别：男</span>
+                  <span>户籍：河北</span>
+                </div>
             </div>
+
             <p class="profile-contact">
-				 邮箱: yuguoweiJob@outlook.com | 地址: 北京市后沙峪
+                邮箱: <a href="mailto:yuguoweiJob@outlook.com">yuguoweiJob@outlook.com</a> | 地址: 北京市后沙峪
             </p>
             <p class="profile-desc">
-                拥有10年以上工业自动化和MES系统开发经验，熟悉多线程编程、系统集成及销售管理软件设计。热爱技术研究，致力于提升生产效率与数据管理智能化。
+               自动化工程师，拥有5+年经验，专注于高端计算机开发。
+              精通工业仪器控制的C#、C++和NI-VISA技术。
+              在为医疗和上位机自动化测试系统方面有着良好的业绩记录
             </p>
         </div>
     </div>
@@ -455,14 +525,22 @@
                 </ul>
             </section>
 
-            <section class="section">
+            <section class="section" style="margin-top: 2rem;">
                 <h2>教育背景</h2>
                 <ul class="education-list">
-                    <li><strong>国家开放大学</strong> - 计算机科学与技术学士 (2024 - 2026)</li>
+                    <li class="education-item">
+                        <h3>国家开放大学</h3>
+                        <div class="period">计算机科学与技术学士 (2024 - 至今)</div>
+                        <div class="courses"><strong>主修课程：C语言程序设计 80；计算机组成原理 62；离散数学 93；Java语言程序设计 98；操作系统 63；数据结构 64；数据库应用技术 71；多媒体技术基础 95；</strong></div>
+                    <!--<div class="grades"><strong>学业成绩：</strong> 专业排名前15%，GPA: 3.8/4.0</div>-->
+                    </li>
+                    <li class="education-item">
+                        <h3>河北软件职业技术学院</h3>
+                        <div class="period">软件工程 (2016 - 2019)</div>
+                        <!--<div class="courses"><strong>主修课程：</strong> Java程序设计、软件工程、Web前端开发、软件测试技术</div>
+                        <div class="grades"><strong>学业成绩：</strong> 连续两年获得校级奖学金</div>-->
+                    </li>
                 </ul>
-				<ul class="education-list">
-				    <li><strong>河北软件职业技术学院</strong> - 软件工程 (2016 - 2019)</li>
-				</ul>
             </section>
         </div>
 
@@ -472,12 +550,23 @@
                 <h2>工作经历</h2>
                 <ul class="work-experience-list">
                     <li>
-                        <strong>某知名制造企业 - 高级软件工程师</strong> <em>(2020·4 - 2026·4)</em><br />
-                        负责MES系统开发、设备接口集成与维护，优化生产线自动化管理流程。
+                        <strong>北京星河亮点技术股份有限公司 - 新产品导入工程师 </strong> <em>(2020·4 - 2026·4)</em><br />
+                                分别基于 C++/Qt（Linux） 与 C#/.NET（Windows） 开发自动化测试系统，
+                      通过 NI-VISA/GPIB/LXI 控制 R&S/Keysight 射频仪器；设计跨平台硬件抽象层（HAL），实现多品牌设备无缝切换；
+                      优化Linux 端多线程采集，测试效率提升 25%；建立全流程数据追溯机制，确保测量可审计。
                     </li>
                     <li>
-                        <strong>某工业软件公司 - 软件开发工程师</strong> <em>(2019·7 - 2019·9)</em><br />
-                        参与销售管理系统及多线程图表演示软件开发，多项目协作经验丰富。
+                        <strong>北京远卓科技有限责任公司 - 软件开发工程师</strong> <em>(2019·7 - 2019·9)</em><br />
+                                基于 C++ 与 Visual FoxPro (VFP) 开发维护医疗管理系统模块；
+                              在Oracle 中设计并优化数据库架构，支撑复杂医疗数据结构；
+                              通过 UI/UX 优化显著提升 CRUD 操作效率，减少医务数据录入时间；
+                              在保障遗留系统稳定性的前提下实现功能扩展与集成。
+                    </li>
+                    <li>
+                        <strong>北京北方新宇信息技术有限公司(日企) - 软件开发工程师</strong> <em>(2019·7 - 2019·9)</em><br />
+                                  对日离岸软件开发规范编码：依据日方详细式样书，在既定算法框架内
+                                  完成核心业务逻辑的精准实现与代码填充。缺陷修复：通过邮件及会议
+                                  与日方紧密沟通，高效定位并修复程序缺陷，保障交付质量。
                     </li>
                 </ul>
             </section>
@@ -609,7 +698,6 @@
     const avatarInput = document.getElementById('avatarInput');
     const avatarPreview = document.getElementById('avatarPreview');
     const avatarPlaceholder = document.querySelector('.avatar-placeholder');
-    const avatarUpload = document.querySelector('.avatar-upload');
 
     avatarInput.addEventListener('change', e => {
         const file = e.target.files[0];
